@@ -41,24 +41,24 @@ class DiagnosaController extends Controller
         foreach ($dataGejala as $kode => $nilai) {
             $gejala = Gejala::where('kode_gejala', $kode)->first();
             if ($gejala->bagian == 'A') {
-                $partA[] = ['kode' => $kode, 'nilai' => (int)$nilai];
+                $partA[] = (int)$nilai; //['kode' => $kode, 'nilai' => (int)$nilai];
             } else {
-                $partB[] = ['kode' => $kode, 'nilai' => (int)$nilai];
+                $partB[] = (int)$nilai; //['kode' => $kode, 'nilai' => (int)$nilai];
             }
         }
 
         // Hitung total skor dan jumlah gejala bernilai > 0
         $skorA = array_sum(array_column($partA, 'nilai'));
         $skorB = array_sum(array_column($partB, 'nilai'));
-        $jumlahGejalaA = count(array_filter($partA, fn($item) => $item['nilai'] > 0));
-        $jumlahGejalaB = count(array_filter($partB, fn($item) => $item['nilai'] > 0));
+        // $jumlahGejalaA = count(array_filter($partA, fn($item) => $item['nilai'] > 0));
+        // $jumlahGejalaB = count(array_filter($partB, fn($item) => $item['nilai'] > 0));
 
         // Tentukan hasil
         $hasil = "Tidak Ada";
 
-        if ($jumlahGejalaA >= 5 && $skorA >= 24 || $jumlahGejalaB >= 5 && $skorB >= 24) {
+        if ($skorA >= 24 || $skorB >= 24) {
             $hasil = "Tinggi";
-        } elseif ($jumlahGejalaA >= 5 && $skorA >= 17 || $jumlahGejalaB >= 5 && $skorB >= 17) {
+        } elseif ($skorA >= 17 || $skorB >= 17) {
             $hasil = "Sedang";
         }
 
